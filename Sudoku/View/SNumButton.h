@@ -14,6 +14,12 @@ NS_ASSUME_NONNULL_BEGIN
 
 @property (nonatomic, strong) NSString *num;
 
+@property (nonatomic, assign) int errorLevel;
+
+@property (nonatomic, readonly) int row;
+
+@property (nonatomic, readonly) int column;
+
 @end
 
 NS_ASSUME_NONNULL_END

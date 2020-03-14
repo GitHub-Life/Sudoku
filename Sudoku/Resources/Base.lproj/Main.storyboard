@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="nAc-8R-fET">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
@@ -7,10 +7,80 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Navigation Controller-->
+        <scene sceneID="8Ol-8I-mYE">
+            <objects>
+                <navigationController id="nAc-8R-fET" sceneMemberID="viewController">
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="ZUR-PV-LVN">
+                        <rect key="frame" x="0.0" y="44" width="414" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <connections>
+                        <segue destination="zPX-eQ-c6Y" kind="relationship" relationship="rootViewController" id="iz0-hb-aBb"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="HCm-vo-qzC" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-858" y="142"/>
+        </scene>
+        <!--IMSudoku-->
+        <scene sceneID="Kee-8X-uCb">
+            <objects>
+                <viewController storyboardIdentifier="ViewController" id="zPX-eQ-c6Y" customClass="ViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="SSz-nk-FQT">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" spacing="10" translatesAutoresizingMaskIntoConstraints="NO" id="XZw-Rk-xit">
+                                <rect key="frame" x="184" y="353" width="46" height="190"/>
+                                <subviews>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="FGb-XL-91G" customClass="SLevelButton">
+                                        <rect key="frame" x="0.0" y="0.0" width="46" height="30"/>
+                                        <state key="normal" title="低级"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xbA-du-s04" customClass="SLevelButton">
+                                        <rect key="frame" x="0.0" y="40" width="46" height="30"/>
+                                        <state key="normal" title="初级"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="yZQ-Ai-3d6" customClass="SLevelButton">
+                                        <rect key="frame" x="0.0" y="80" width="46" height="30"/>
+                                        <state key="normal" title="中级"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="B2e-yz-LD3" customClass="SLevelButton">
+                                        <rect key="frame" x="0.0" y="120" width="46" height="30"/>
+                                        <state key="normal" title="高级"/>
+                                    </button>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="zmv-bk-jlA" customClass="SLevelButton">
+                                        <rect key="frame" x="0.0" y="160" width="46" height="30"/>
+                                        <state key="normal" title="骨灰级"/>
+                                    </button>
+                                </subviews>
+                            </stackView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="XZw-Rk-xit" firstAttribute="centerY" secondItem="SSz-nk-FQT" secondAttribute="centerY" id="i5e-uX-Luj"/>
+                            <constraint firstItem="XZw-Rk-xit" firstAttribute="centerX" secondItem="SSz-nk-FQT" secondAttribute="centerX" id="pZJ-9v-9Yq"/>
+                        </constraints>
+                        <viewLayoutGuide key="safeArea" id="7TS-iK-EO8"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="IMSudoku" id="mbl-0I-Whl"/>
+                    <connections>
+                        <outletCollection property="difficultyLevelBtns" destination="FGb-XL-91G" id="QMU-92-Ijp"/>
+                        <outletCollection property="difficultyLevelBtns" destination="xbA-du-s04" id="kIw-26-Spi"/>
+                        <outletCollection property="difficultyLevelBtns" destination="yZQ-Ai-3d6" id="dK8-nH-GF6"/>
+                        <outletCollection property="difficultyLevelBtns" destination="B2e-yz-LD3" id="qZ6-p8-6QF"/>
+                        <outletCollection property="difficultyLevelBtns" destination="zmv-bk-jlA" id="MVF-7q-taP"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="uCi-mB-Yvs" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-138" y="142"/>
+        </scene>
+        <!--Sudoku View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SudokuViewController" id="BYZ-38-t0r" customClass="SudokuViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -986,11 +1056,44 @@
                                             <constraint firstAttribute="bottom" secondItem="tKv-RK-DOc" secondAttribute="bottom" constant="3" id="hXt-lq-mzV"/>
                                         </constraints>
                                     </view>
+                                    <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="quB-iF-9g8">
+                                        <rect key="frame" x="0.0" y="452" width="404" height="2"/>
+                                        <color key="backgroundColor" systemColor="opaqueSeparatorColor" red="0.77647058820000003" green="0.77647058820000003" blue="0.7843137255" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="2" id="gy9-6h-jBF"/>
+                                        </constraints>
+                                    </view>
                                     <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Xby-uC-3n7">
                                         <rect key="frame" x="0.0" y="454" width="404" height="354"/>
                                         <subviews>
-                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="OON-YL-vxM">
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="iUA-l8-D82">
                                                 <rect key="frame" x="0.0" y="0.0" width="404" height="88.5"/>
+                                                <subviews>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="pZp-Gb-Hkd" customClass="SNumKeyButton">
+                                                        <rect key="frame" x="0.0" y="0.0" width="134.5" height="88.5"/>
+                                                        <state key="normal" image="refresh"/>
+                                                        <connections>
+                                                            <action selector="refreshClick" destination="BYZ-38-t0r" eventType="touchUpInside" id="mRe-zo-bB9"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="xlm-YJ-5VS" customClass="SNumKeyButton">
+                                                        <rect key="frame" x="134.5" y="0.0" width="135" height="88.5"/>
+                                                        <state key="normal" image="hint"/>
+                                                        <connections>
+                                                            <action selector="hintClick" destination="BYZ-38-t0r" eventType="touchUpInside" id="eTV-nQ-AMT"/>
+                                                        </connections>
+                                                    </button>
+                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="06P-DE-xVM" customClass="SNumKeyButton">
+                                                        <rect key="frame" x="269.5" y="0.0" width="134.5" height="88.5"/>
+                                                        <state key="normal" image="delete"/>
+                                                        <connections>
+                                                            <action selector="deleteClick" destination="BYZ-38-t0r" eventType="touchUpInside" id="uWe-fa-fkj"/>
+                                                        </connections>
+                                                    </button>
+                                                </subviews>
+                                            </stackView>
+                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="OON-YL-vxM">
+                                                <rect key="frame" x="0.0" y="88.5" width="404" height="88.5"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="N1I-X8-jxL" customClass="SNumKeyButton">
                                                         <rect key="frame" x="0.0" y="0.0" width="134.5" height="88.5"/>
@@ -1007,7 +1110,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="Spx-2C-Mbi">
-                                                <rect key="frame" x="0.0" y="88.5" width="404" height="88.5"/>
+                                                <rect key="frame" x="0.0" y="177" width="404" height="88.5"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="anl-Ap-TUs" customClass="SNumKeyButton">
                                                         <rect key="frame" x="0.0" y="0.0" width="134.5" height="88.5"/>
@@ -1024,7 +1127,7 @@
                                                 </subviews>
                                             </stackView>
                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="e4T-0C-Hia">
-                                                <rect key="frame" x="0.0" y="177" width="404" height="88.5"/>
+                                                <rect key="frame" x="0.0" y="265.5" width="404" height="88.5"/>
                                                 <subviews>
                                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="u5b-xY-hbR" customClass="SNumKeyButton">
                                                         <rect key="frame" x="0.0" y="0.0" width="134.5" height="88.5"/>
@@ -1040,28 +1143,32 @@
                                                     </button>
                                                 </subviews>
                                             </stackView>
-                                            <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="iUA-l8-D82">
-                                                <rect key="frame" x="0.0" y="265.5" width="404" height="88.5"/>
-                                                <subviews>
-                                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="06P-DE-xVM" customClass="SNumKeyButton">
-                                                        <rect key="frame" x="0.0" y="0.0" width="404" height="88.5"/>
-                                                        <state key="normal" image="delete"/>
-                                                        <connections>
-                                                            <action selector="deleteClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Kcz-cw-nFp"/>
-                                                        </connections>
-                                                    </button>
-                                                </subviews>
-                                            </stackView>
                                         </subviews>
                                     </stackView>
+                                    <label opaque="NO" userInteractionEnabled="NO" alpha="0.0" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="相关连单元格有不符合数独规则出现！！！" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="XRd-7W-FqV">
+                                        <rect key="frame" x="20" y="404" width="364" height="48"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="18"/>
+                                        <color key="textColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <nil key="highlightedColor"/>
+                                        <userDefinedRuntimeAttributes>
+                                            <userDefinedRuntimeAttribute type="boolean" keyPath="autoAdjWidth" value="YES"/>
+                                        </userDefinedRuntimeAttributes>
+                                    </label>
                                 </subviews>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <constraints>
+                                    <constraint firstItem="Xby-uC-3n7" firstAttribute="top" secondItem="quB-iF-9g8" secondAttribute="bottom" id="2ib-ze-6w7"/>
+                                    <constraint firstItem="XRd-7W-FqV" firstAttribute="leading" secondItem="5jB-k8-gTF" secondAttribute="leading" constant="20" id="L21-4M-sy5"/>
+                                    <constraint firstItem="quB-iF-9g8" firstAttribute="leading" secondItem="5jB-k8-gTF" secondAttribute="leading" id="MkE-Oj-PPS"/>
                                     <constraint firstAttribute="trailing" secondItem="Xby-uC-3n7" secondAttribute="trailing" id="Nre-HJ-yia"/>
                                     <constraint firstItem="JnK-2F-GYU" firstAttribute="leading" secondItem="5jB-k8-gTF" secondAttribute="leading" id="PbM-GG-ZuQ"/>
                                     <constraint firstAttribute="trailing" secondItem="JnK-2F-GYU" secondAttribute="trailing" id="QBI-RY-bxg"/>
+                                    <constraint firstAttribute="trailing" secondItem="XRd-7W-FqV" secondAttribute="trailing" constant="20" id="Uw1-uY-fyn"/>
                                     <constraint firstItem="Xby-uC-3n7" firstAttribute="leading" secondItem="5jB-k8-gTF" secondAttribute="leading" id="bhy-xc-g1A"/>
+                                    <constraint firstAttribute="trailing" secondItem="quB-iF-9g8" secondAttribute="trailing" id="dXM-Fu-JlY"/>
+                                    <constraint firstItem="quB-iF-9g8" firstAttribute="top" secondItem="XRd-7W-FqV" secondAttribute="bottom" id="fTL-06-fGS"/>
                                     <constraint firstItem="JnK-2F-GYU" firstAttribute="top" secondItem="5jB-k8-gTF" secondAttribute="top" id="i3u-jK-x0S"/>
+                                    <constraint firstItem="XRd-7W-FqV" firstAttribute="top" secondItem="JnK-2F-GYU" secondAttribute="bottom" id="ihv-ak-NNK"/>
                                     <constraint firstAttribute="bottom" secondItem="Xby-uC-3n7" secondAttribute="bottom" id="wvh-PP-6z2"/>
                                     <constraint firstItem="Xby-uC-3n7" firstAttribute="top" secondItem="JnK-2F-GYU" secondAttribute="bottom" constant="50" id="yTd-bS-1xl"/>
                                 </constraints>
@@ -1084,8 +1191,9 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
+                    <navigationItem key="navigationItem" id="7MZ-GQ-UAo"/>
                     <connections>
-                        <outlet property="deleteKeyBtn" destination="06P-DE-xVM" id="4ok-5v-Yof"/>
+                        <outlet property="warningLabel" destination="XRd-7W-FqV" id="Yx8-bX-XdD"/>
                         <outletCollection property="items0" destination="NS1-cO-bMc" id="6RV-cy-xnI"/>
                         <outletCollection property="items0" destination="UYt-kc-aMr" id="rUR-aV-8E0"/>
                         <outletCollection property="items0" destination="XTx-uB-LK1" id="HUu-KH-edM"/>
@@ -1180,10 +1288,12 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="139" y="139"/>
+            <point key="canvasLocation" x="601" y="142"/>
         </scene>
     </scenes>
     <resources>
         <image name="delete" width="40" height="40"/>
+        <image name="hint" width="40" height="40"/>
+        <image name="refresh" width="40" height="40"/>
     </resources>
 </document>

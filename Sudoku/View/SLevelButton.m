@@ -1,15 +1,15 @@
 //
-//  SNumKeyButton.m
+//  SLevelButton.m
 //  Sudoku
 //
-//  Created by 万涛 on 2020/3/13.
+//  Created by 万涛 on 2020/3/14.
 //  Copyright © 2020 iMoon. All rights reserved.
 //
 
-#import "SNumKeyButton.h"
+#import "SLevelButton.h"
 #import "UIView+IB.h"
 
-@implementation SNumKeyButton
+@implementation SLevelButton
 
 - (instancetype)init {
     if (self = [super init]) {
@@ -27,15 +27,12 @@
 
 - (void)initSetup {
     self.backgroundColor = UIColor.systemBackgroundColor;
-    self.titleLabel.font = [UIFont systemFontOfSize:30];
     [self setTitleColor:UIColor.labelColor forState:UIControlStateNormal];
-    [self setTitleColor:[UIColor.labelColor colorWithAlphaComponent:0.3] forState:UIControlStateDisabled];
+    self.titleLabel.font = [UIFont systemFontOfSize:18];
+    self.cornerRadius = 7;
+    self.borderColor = UIColor.labelColor;
     self.borderWidth = 1;
-    self.borderColor = UIColor.separatorColor;
-}
-
-- (NSString *)num {
-    return self.titleLabel.text;
+    self.contentEdgeInsets = UIEdgeInsetsMake(12, 24, 12, 24);
 }
 
 @end

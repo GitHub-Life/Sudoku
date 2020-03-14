@@ -14,7 +14,7 @@
 /// @param datas 数独数据
 /// @param row 某个点的横坐标
 /// @param column 某个点的纵坐标
-- (BOOL)verifySudokuWithDatas:(NSArray<NSArray<NSString *> *> *)datas row:(NSInteger)row column:(NSInteger)column {
++ (BOOL)verifySudokuWithDatas:(NSArray<NSArray<NSString *> *> *)datas row:(NSInteger)row column:(NSInteger)column {
     if (row >= datas.count) {
         return NO;
     }
@@ -43,7 +43,7 @@
     }
     // 3*3单元验证
     NSInteger startRow = row - row % 3;
-    NSInteger startColumn = column = column % 3;
+    NSInteger startColumn = column - column % 3;
     for (NSInteger i = startRow; i < startRow + 3; i++) {
         for (NSInteger j = startColumn; j < startColumn + 3; j++) {
             if (i != row && j != column && [numStr isEqualToString:datas[i][j]]) {
@@ -55,7 +55,7 @@
 }
 
 /// 生成空数独数据(数据全为0)
-- (NSMutableArray<NSMutableArray<NSString *> *> *)generateZeroSudokuDatas {
++ (NSMutableArray<NSMutableArray<NSString *> *> *)generateZeroSudokuDatas {
     NSMutableArray<NSMutableArray<NSString *> *> *datas = [NSMutableArray arrayWithCapacity:9];
     for (int i = 0; i < 9; i++) {
         NSMutableArray<NSString *> *rowNums = [NSMutableArray arrayWithCapacity:9];
@@ -68,7 +68,7 @@
 }
 
 /// 生成初始数独数据
-- (NSMutableArray<NSMutableArray<NSString *> *> *)generateInitialSudokuDatas {
++ (NSMutableArray<NSMutableArray<NSString *> *> *)generateInitialSudokuDatas {
     NSMutableArray<NSMutableArray<NSString *> *> *datas = [self generateZeroSudokuDatas];
     // 1.按顺序将 1~9 填入宫格中；
     // 2.检查所在行、列及3*3单元中是否存在相同数字；
@@ -92,7 +92,7 @@
 
 /// 将初始数独数据变换
 /// @param datas 初始数独数据
-- (NSMutableArray<NSMutableArray<NSString *> *> *)conversionSudokuDatas:(NSMutableArray<NSMutableArray<NSString *> *> *)datas {
++ (NSMutableArray<NSMutableArray<NSString *> *> *)conversionSudokuDatas:(NSMutableArray<NSMutableArray<NSString *> *> *)datas {
     // 随机交换某两行(同一个3*3单元内)
     int row = 1;
     while (row < 9 && row % 3 == 1) {
@@ -133,9 +133,51 @@
     return datas;
 }
 
-/// 生成数独数据
-- (NSMutableArray<NSMutableArray<NSString *> *> *)generateCompleteSudokuDatas {
+/// 生成终盘数独数据
++ (NSMutableArray<NSMutableArray<NSString *> *> *)generateCompleteSudokuDatas {
     return [self conversionSudokuDatas:[self generateInitialSudokuDatas]];
+}
+
+
+/// 根据终盘数独数据生成可解的数独数据
+/// @param completeDatas 终盘数独数据
++ (NSMutableArray<NSMutableArray<NSString *> *> *)generateSudokuDatasWithCompleteSudokuDatas:(NSArray<NSArray<NSString *> *> *)completeDatas {
+    NSMutableArray *datas = [NSMutableArray arrayWithCapacity:completeDatas.count];
+    for (NSArray *rowNums in completeDatas) {
+        [datas addObject:rowNums.mutableCopy];
+    }
+    return datas;
+}
+
+
+/// 某个点可以填入的符合数独规则的数组
+/// @param datas 数独数据
+/// @param row 某个点的横坐标
+/// @param column 某个点的纵坐标
++ (NSArray<NSString *> *)qualifiedNumsWithDatas:(NSArray<NSArray<NSString *> *> *)datas row:(NSInteger)row column:(NSInteger)column {
+    if (row >= datas.count) {
+        return @[];
+    }
+    NSMutableArray<NSString *> *qualifiedNums = @[@"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9"].mutableCopy;
+    // 横向
+    NSMutableSet *existingNums = [NSMutableSet setWithArray:datas[row]];
+    // 纵向
+    for (int i = 0; i < datas.count; i++) {
+        if (column < datas[i].count) {
+            [existingNums addObject:datas[i][column]];
+        }
+    }
+    // 3*3单元
+    NSInteger startRow = row - row % 3;
+    NSInteger startColumn = column - column % 3;
+    for (NSInteger i = startRow; i < startRow + 3; i++) {
+        for (NSInteger j = startColumn; j < startColumn + 3; j++) {
+            [existingNums addObject:datas[i][j]];
+        }
+    }
+    // 去除已存在的数字
+    [qualifiedNums removeObjectsInArray:existingNums.allObjects];
+    return qualifiedNums.copy;
 }
 
 @end
