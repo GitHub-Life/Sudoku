@@ -1,5 +1,5 @@
 //
-//  SNumButton.h
+//  IMSudokuNumItem.h
 //  Sudoku
 //
 //  Created by 万涛 on 2020/3/12.
@@ -10,15 +10,17 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SNumButton : UIButton
+@interface IMSudokuNumItem : UIButton
 
 @property (nonatomic, strong) NSString *num;
 
 @property (nonatomic, assign) int errorLevel;
 
-@property (nonatomic, readonly) int row;
+@property (nonatomic, readonly) NSInteger row;
 
-@property (nonatomic, readonly) int column;
+@property (nonatomic, readonly) NSInteger column;
+
+@property (nonatomic, strong) NSMutableSet<NSString *> *noteNums;
 
 @end
 

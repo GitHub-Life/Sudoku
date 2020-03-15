@@ -7,43 +7,26 @@
 //
 
 #import "SudokuViewController.h"
-#import "SNumButton.h"
+#import "IMSudokuView.h"
 #import "SNumKeyButton.h"
 #import "IMSudokuTool.h"
 
-@interface SudokuViewController ()
+@interface SudokuViewController () <IMSudokuViewDelegate>
 
-@property (strong, nonatomic) IBOutletCollection(SNumButton) NSArray *items0;
-@property (strong, nonatomic) IBOutletCollection(SNumButton) NSArray *items1;
-@property (strong, nonatomic) IBOutletCollection(SNumButton) NSArray *items2;
-@property (strong, nonatomic) IBOutletCollection(SNumButton) NSArray *items3;
-@property (strong, nonatomic) IBOutletCollection(SNumButton) NSArray *items4;
-@property (strong, nonatomic) IBOutletCollection(SNumButton) NSArray *items5;
-@property (strong, nonatomic) IBOutletCollection(SNumButton) NSArray *items6;
-@property (strong, nonatomic) IBOutletCollection(SNumButton) NSArray *items7;
-@property (strong, nonatomic) IBOutletCollection(SNumButton) NSArray *items8;
-
-@property (nonatomic, strong) NSArray<NSArray *> *itemsArray;
+@property (weak, nonatomic) IBOutlet IMSudokuView *sudokuView;
 @property (nonatomic, weak) NSArray<NSArray *> *completeDatas;
 @property (nonatomic, weak) NSArray<NSMutableArray *> *datas;
 @property (nonatomic, strong) NSDictionary *sudokuDatas;
-@property (nonatomic, weak) SNumButton *selectedItem;
 
 @property (weak, nonatomic) IBOutlet UILabel *warningLabel;
 @property (strong, nonatomic) IBOutletCollection(SNumKeyButton) NSArray *numKeyBtns;
+@property (weak, nonatomic) IBOutlet UIButton *noteBtn;
 
 @end
 
 @implementation SudokuViewController
 
 #pragma mark - 懒加载
-- (NSArray<NSArray *> *)itemsArray {
-    if (!_itemsArray) {
-        _itemsArray = @[_items0, _items1, _items2, _items3, _items4, _items5, _items6, _items7, _items8];
-    }
-    return _itemsArray;
-}
-
 - (NSDictionary *)sudokuDatas {
     if (!_sudokuDatas) {
         _sudokuDatas = [IMSudokuTool sudokuDatasWithDifficultyLevel:self.difficultyLevel];
@@ -72,14 +55,7 @@
 }
 
 - (void)initSetup {
-    for (int i = 0; i < self.itemsArray.count; i++) {
-        NSArray *items = self.itemsArray[i];
-        for (int j = 0; j < items.count; j++) {
-            UIButton *item = items[j];
-            item.tag = i * 10 + j;
-            [item addTarget:self action:@selector(itemClick:) forControlEvents:UIControlEventTouchUpInside];
-        }
-    }
+    self.sudokuView.delegate = self;
     for (int i = 0; i < self.numKeyBtns.count; i++) {
         UIButton *numKey = self.numKeyBtns[i];
         numKey.tag = i + 1;
@@ -95,9 +71,9 @@
 }
 
 - (void)fillDatas {
-    for (int i = 0; i < MIN(self.itemsArray.count, self.datas.count); i++) {
-        for (int j = 0; j < MIN(self.itemsArray[i].count, self.datas[i].count); j++) {
-            SNumButton *item = self.itemsArray[i][j];
+    for (int i = 0; i < MIN(self.sudokuView.numItemsArray.count, self.datas.count); i++) {
+        for (int j = 0; j < MIN(self.sudokuView.numItemsArray[i].count, self.datas[i].count); j++) {
+            IMSudokuNumItem *item = self.sudokuView.numItemsArray[i][j];
             item.num = self.datas[i][j];
             if ([item.num isEqualToString:@"0"]) {
                 item.backgroundColor = UIColor.systemFillColor;
@@ -106,13 +82,19 @@
     }
 }
 
+#pragma mark - IMSudokuView Delagate
+- (void)sudokuNumItemSelected {
+    [self numKeyshHighlightQualifiedNums];
+}
+
+
 - (void)numKeyshHighlightQualifiedNums {
-    if (self.selectedItem == nil) {
+    if (self.sudokuView.selectedItem == nil) {
         for (SNumKeyButton *numKeyBtn in self.numKeyBtns) {
             numKeyBtn.enabled = NO;
         }
     } else {
-        NSArray<NSString *> *qualifiedNums = [IMSudoku qualifiedNumsWithDatas:self.datas row:self.selectedItem.row column:self.selectedItem.column];
+        NSArray<NSString *> *qualifiedNums = [IMSudoku qualifiedNumsWithDatas:self.datas row:self.sudokuView.selectedItem.row column:self.sudokuView.selectedItem.column];
         for (SNumKeyButton *numKeyBtn in self.numKeyBtns) {
             numKeyBtn.enabled = [qualifiedNums containsObject:numKeyBtn.num];
         }
@@ -120,29 +102,22 @@
 }
 
 #pragma mark - 按钮点击事件
-- (void)itemClick:(SNumButton *)item {
-    self.selectedItem.selected = NO;
-    item.selected = YES;
-    self.selectedItem = item;
-    [self numKeyshHighlightQualifiedNums];
-}
-
 - (void)numkeyClick:(SNumKeyButton *)numKey {
-    if (self.selectedItem == nil) return;
+    if (self.sudokuView.selectedItem == nil) return;
     [self setItemNum:numKey.num];
 }
 
 - (IBAction)hintClick {
-    if (self.selectedItem == nil) return;
-    [self setItemNum:self.completeDatas[self.selectedItem.row][self.selectedItem.column]];
+    if (self.sudokuView.selectedItem == nil) return;
+    [self setItemNum:self.completeDatas[self.sudokuView.selectedItem.row][self.sudokuView.selectedItem.column]];
 }
 
 - (void)setItemNum:(NSString *)num {
-    if (self.selectedItem == nil) return;
-    self.selectedItem.num = num;
-    self.datas[self.selectedItem.row][self.selectedItem.column] = self.selectedItem.num;
+    if (self.sudokuView.selectedItem == nil) return;
+    self.sudokuView.selectedItem.num = num;
+    self.datas[self.sudokuView.selectedItem.row][self.sudokuView.selectedItem.column] = self.sudokuView.selectedItem.num;
     [self numKeyshHighlightQualifiedNums];
-    if (![IMSudoku verifySudokuWithDatas:self.datas row:self.selectedItem.row column:self.selectedItem.column]) {
+    if (![IMSudoku verifySudokuWithDatas:self.datas row:self.sudokuView.selectedItem.row column:self.sudokuView.selectedItem.column]) {
         [UIView animateWithDuration:0.3 animations:^{
             self.warningLabel.alpha = 1;
         }];
@@ -160,9 +135,9 @@
 }
 
 - (IBAction)deleteClick {
-    if (self.selectedItem == nil) return;
-    self.selectedItem.num = @"";
-    self.datas[self.selectedItem.row][self.selectedItem.column] = @"";
+    if (self.sudokuView.selectedItem == nil) return;
+    self.sudokuView.selectedItem.num = @"";
+    self.datas[self.sudokuView.selectedItem.row][self.sudokuView.selectedItem.column] = @"";
     [self numKeyshHighlightQualifiedNums];
 }
 
@@ -176,15 +151,18 @@
         weakSelf.completeDatas = nil;
         weakSelf.datas = nil;
         [weakSelf fillDatas];
-        if (weakSelf.selectedItem != nil) {
-            weakSelf.selectedItem.selected = NO;
-            weakSelf.selectedItem = nil;
+        if (weakSelf.sudokuView.selectedItem != nil) {
+            weakSelf.sudokuView.selectedItem.selected = NO;
+            weakSelf.sudokuView.selectedItem = nil;
             [weakSelf numKeyshHighlightQualifiedNums];
         }
     }];
     [alert addAction:cancel];
     [alert addAction:confirm];
     [self presentViewController:alert animated:YES completion:nil];
+}
+
+- (IBAction)noteClick {
 }
 
 #pragma mark - 页面即将消失

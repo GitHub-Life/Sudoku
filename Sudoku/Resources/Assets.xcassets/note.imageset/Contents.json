@@ -30,12 +30,12 @@
     },
     {
       "idiom" : "universal",
-      "filename" : "warning@3x.png",
+      "filename" : "note@3x.png",
       "scale" : "3x"
     },
     {
       "idiom" : "universal",
-      "filename" : "warning@3x-1.png",
+      "filename" : "note_dark@3x.png",
       "appearances" : [
         {
           "appearance" : "luminosity",
