@@ -28,11 +28,11 @@ NS_ASSUME_NONNULL_BEGIN
 + (NSMutableArray<NSMutableArray<NSString *> *> *)generateSudokuDatasWithCompleteSudokuDatas:(NSArray<NSArray<NSString *> *> *)completeDatas;
 
 
-/// 某个点可以填入的符合数独规则的数组
+/// 某个点可以填入的符合数独规则的数字集合
 /// @param datas 数独数据
 /// @param row 某个点的横坐标
 /// @param column 某个点的纵坐标
-+ (NSArray<NSString *> *)qualifiedNumsWithDatas:(NSArray<NSArray<NSString *> *> *)datas row:(NSInteger)row column:(NSInteger)column;
++ (NSSet<NSString *> *)qualifiedNumsWithDatas:(NSArray<NSArray<NSString *> *> *)datas row:(NSInteger)row column:(NSInteger)column;
 
 @end
 

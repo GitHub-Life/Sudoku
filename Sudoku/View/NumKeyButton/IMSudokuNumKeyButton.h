@@ -1,5 +1,5 @@
 //
-//  SNumKeyButton.h
+//  IMSudokuNumKeyButton.h
 //  Sudoku
 //
 //  Created by 万涛 on 2020/3/13.
@@ -10,7 +10,7 @@
 
 NS_ASSUME_NONNULL_BEGIN
 
-@interface SNumKeyButton : UIButton
+@interface IMSudokuNumKeyButton : UIButton
 
 @property (nonatomic, readonly) NSString *num;
 

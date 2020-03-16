@@ -26,12 +26,11 @@
 }
 
 - (void)initSetup {
-    self.backgroundColor = UIColor.systemBackgroundColor;
     self.tintColor = UIColor.clearColor;
     self.titleLabel.font = [UIFont systemFontOfSize:20];
     [self setTitleColor:UIColor.labelColor forState:UIControlStateNormal];
-    [self setTitleColor:UIColor.labelColor forState:UIControlStateSelected];
     [self setTitleColor:[UIColor.labelColor colorWithAlphaComponent:0.5] forState:UIControlStateDisabled];
+    self.selected = NO;
 }
 
 - (void)setEnabled:(BOOL)enabled {
@@ -39,26 +38,29 @@
     if (enabled) {
         self.backgroundColor = UIColor.systemBackgroundColor;
     } else {
-        self.backgroundColor = UIColor.systemFillColor;
+        self.backgroundColor = UIColor.separatorColor;
     }
 }
 
 - (void)setNum:(NSString *)num {
     _num = num;
-    if ([num isEqual:@"0"]) {
+    if ([num isEqual:@"0"] || num.length == 0) {
         [self setTitle:@"" forState:UIControlStateNormal];
     } else {
         [self setTitle:num forState:UIControlStateNormal];
+        self.noteNums = [NSMutableSet set];;
+        [self setNeedsDisplay];
     }
 }
 
 - (void)setSelected:(BOOL)selected {
     [super setSelected:selected];
     if (selected) {
-        self.borderColor = UIColor.systemRedColor;
-        self.borderWidth = 1;
+        self.backgroundColor = UIColor.labelColor;
+        [self setTitleColor:UIColor.systemBackgroundColor forState:UIControlStateSelected];
     } else {
-        self.borderWidth = 0;
+        self.backgroundColor = UIColor.systemBackgroundColor;
+        [self setTitleColor:UIColor.labelColor forState:UIControlStateSelected];
     }
 }
 
@@ -84,23 +86,27 @@
     return (int)self.tag % 10;
 }
 
-- (NSMutableSet<NSString *> *)noteNums {
-    if (!_noteNums) {
-        _noteNums = [NSMutableSet setWithCapacity:9];
-    }
-    return _noteNums;
+- (void)setNoteNums:(NSMutableSet<NSString *> *)noteNums {
+    _noteNums = noteNums;
+    [self setNeedsDisplay];
 }
 
 - (void)addNoteNum:(NSString *)noteNum {
-    if (![self.noteNums containsObject:noteNum]) {
-        [self.noteNums addObject:noteNum];
+    if (self.titleLabel.text.length > 0) {
+        self.num = @"";
+    }
+    if (_noteNums == nil) {
+        [_noteNums addObject:noteNum];
+        [self setNeedsDisplay];
+    } else if (![_noteNums containsObject:noteNum]) {
+        [_noteNums addObject:noteNum];
         [self setNeedsDisplay];
     }
 }
 
 - (void)removeNoteNum:(NSString *)noteNum {
-    if ([self.noteNums containsObject:noteNum]) {
-        [self.noteNums removeObject:noteNum];
+    if ([_noteNums containsObject:noteNum]) {
+        [_noteNums removeObject:noteNum];
         [self setNeedsDisplay];
     }
 }

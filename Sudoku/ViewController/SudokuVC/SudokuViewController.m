@@ -8,18 +8,18 @@
 
 #import "SudokuViewController.h"
 #import "IMSudokuView.h"
-#import "SNumKeyButton.h"
+#import "IMSudokuNumKeyboardView.h"
 #import "IMSudokuTool.h"
 
-@interface SudokuViewController () <IMSudokuViewDelegate>
+@interface SudokuViewController () <IMSudokuViewDelegate, IMSudokuNumKeyboardViewDelegate>
 
 @property (weak, nonatomic) IBOutlet IMSudokuView *sudokuView;
+@property (weak, nonatomic) IBOutlet IMSudokuNumKeyboardView *numKeyboardView;
 @property (nonatomic, weak) NSArray<NSArray *> *completeDatas;
 @property (nonatomic, weak) NSArray<NSMutableArray *> *datas;
 @property (nonatomic, strong) NSDictionary *sudokuDatas;
 
 @property (weak, nonatomic) IBOutlet UILabel *warningLabel;
-@property (strong, nonatomic) IBOutletCollection(SNumKeyButton) NSArray *numKeyBtns;
 @property (weak, nonatomic) IBOutlet UIButton *noteBtn;
 
 @end
@@ -55,12 +55,9 @@
 }
 
 - (void)initSetup {
+    if (self.difficultyLevel == 0) self.difficultyLevel = 1;
     self.sudokuView.delegate = self;
-    for (int i = 0; i < self.numKeyBtns.count; i++) {
-        UIButton *numKey = self.numKeyBtns[i];
-        numKey.tag = i + 1;
-        [numKey addTarget:self action:@selector(numkeyClick:) forControlEvents:UIControlEventTouchUpInside];
-    }
+    self.numKeyboardView.delegate = self;
     [self numKeyshHighlightQualifiedNums];
 }
 
@@ -87,28 +84,35 @@
     [self numKeyshHighlightQualifiedNums];
 }
 
+#pragma mark - IMSudokuNumKeyboardView Delegate
+- (void)clickNumKeyBtn:(IMSudokuNumKeyButton *)numKeyBtn {
+    if (self.sudokuView.selectedItem == nil) return;
+    if (self.noteBtn.selected) {
+        [self.sudokuView.selectedItem addNoteNum:numKeyBtn.num];
+    } else {
+        [self setItemNum:numKeyBtn.num];
+    }
+}
 
 - (void)numKeyshHighlightQualifiedNums {
     if (self.sudokuView.selectedItem == nil) {
-        for (SNumKeyButton *numKeyBtn in self.numKeyBtns) {
-            numKeyBtn.enabled = NO;
-        }
+        [self.numKeyboardView setQualifiedNums:nil];
     } else {
-        NSArray<NSString *> *qualifiedNums = [IMSudoku qualifiedNumsWithDatas:self.datas row:self.sudokuView.selectedItem.row column:self.sudokuView.selectedItem.column];
-        for (SNumKeyButton *numKeyBtn in self.numKeyBtns) {
-            numKeyBtn.enabled = [qualifiedNums containsObject:numKeyBtn.num];
+        NSSet *qualifiedNums = [IMSudoku qualifiedNumsWithDatas:self.datas row:self.sudokuView.selectedItem.row column:self.sudokuView.selectedItem.column];
+        if (self.noteBtn.selected) {
+            NSMutableArray *nums = qualifiedNums.allObjects.mutableCopy;
+            [nums removeObjectsInArray:self.sudokuView.selectedItem.noteNums.allObjects];
+            [self.numKeyboardView setQualifiedNums:[NSSet setWithArray:nums]];
+        } else {
+            [self.numKeyboardView setQualifiedNums:qualifiedNums];
         }
     }
 }
 
 #pragma mark - 按钮点击事件
-- (void)numkeyClick:(SNumKeyButton *)numKey {
-    if (self.sudokuView.selectedItem == nil) return;
-    [self setItemNum:numKey.num];
-}
-
 - (IBAction)hintClick {
     if (self.sudokuView.selectedItem == nil) return;
+    [self noteClick];
     [self setItemNum:self.completeDatas[self.sudokuView.selectedItem.row][self.sudokuView.selectedItem.column]];
 }
 
@@ -163,6 +167,8 @@
 }
 
 - (IBAction)noteClick {
+    self.noteBtn.selected = !self.noteBtn.selected;
+    [self numKeyshHighlightQualifiedNums];
 }
 
 #pragma mark - 页面即将消失

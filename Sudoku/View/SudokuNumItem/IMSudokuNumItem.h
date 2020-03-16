@@ -21,6 +21,8 @@ NS_ASSUME_NONNULL_BEGIN
 @property (nonatomic, readonly) NSInteger column;
 
 @property (nonatomic, strong) NSMutableSet<NSString *> *noteNums;
+- (void)addNoteNum:(NSString *)noteNum;
+- (void)removeNoteNum:(NSString *)noteNum;
 
 @end
 

@@ -1,15 +1,15 @@
 //
-//  SNumKeyButton.m
+//  IMSudokuNumKeyButton.m
 //  Sudoku
 //
 //  Created by 万涛 on 2020/3/13.
 //  Copyright © 2020 iMoon. All rights reserved.
 //
 
-#import "SNumKeyButton.h"
+#import "IMSudokuNumKeyButton.h"
 #import "UIView+IB.h"
 
-@implementation SNumKeyButton
+@implementation IMSudokuNumKeyButton
 
 - (instancetype)init {
     if (self = [super init]) {
@@ -30,8 +30,6 @@
     self.titleLabel.font = [UIFont systemFontOfSize:30];
     [self setTitleColor:UIColor.labelColor forState:UIControlStateNormal];
     [self setTitleColor:[UIColor.labelColor colorWithAlphaComponent:0.3] forState:UIControlStateDisabled];
-    self.borderWidth = 1;
-    self.borderColor = UIColor.separatorColor;
 }
 
 - (NSString *)num {

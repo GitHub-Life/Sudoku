@@ -150,15 +150,14 @@
 }
 
 
-/// 某个点可以填入的符合数独规则的数组
+/// 某个点可以填入的符合数独规则的数字集合
 /// @param datas 数独数据
 /// @param row 某个点的横坐标
 /// @param column 某个点的纵坐标
-+ (NSArray<NSString *> *)qualifiedNumsWithDatas:(NSArray<NSArray<NSString *> *> *)datas row:(NSInteger)row column:(NSInteger)column {
++ (NSSet<NSString *> *)qualifiedNumsWithDatas:(NSArray<NSArray<NSString *> *> *)datas row:(NSInteger)row column:(NSInteger)column {
     if (row >= datas.count) {
-        return @[];
+        return nil;
     }
-    NSMutableArray<NSString *> *qualifiedNums = @[@"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9"].mutableCopy;
     // 横向
     NSMutableSet *existingNums = [NSMutableSet setWithArray:datas[row]];
     // 纵向
@@ -176,8 +175,9 @@
         }
     }
     // 去除已存在的数字
+    NSMutableArray<NSString *> *qualifiedNums = @[@"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9"].mutableCopy;
     [qualifiedNums removeObjectsInArray:existingNums.allObjects];
-    return qualifiedNums.copy;
+    return [NSSet setWithArray:qualifiedNums];
 }
 
 @end
